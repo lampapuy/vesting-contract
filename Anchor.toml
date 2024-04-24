@@ -1,0 +1,24 @@
+[features]
+seeds = false
+
+[programs.localnet]
+vesting = "pg5a1ZzhWAFjqTFhKWRivUjS6bLw1xHX8PpKxnp1h5g"
+# staking = "2sbJrDbu2ansQ6NZ78GrBb3NYGaGcKpF5WJQCo581uvD"
+
+[programs.devnet]
+vesting = "pg5a1ZzhWAFjqTFhKWRivUjS6bLw1xHX8PpKxnp1h5g"
+# staking = "2sbJrDbu2ansQ6NZ78GrBb3NYGaGcKpF5WJQCo581uvD"
+
+[programs.mainnet]
+vesting = "pg5a1ZzhWAFjqTFhKWRivUjS6bLw1xHX8PpKxnp1h5g"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "devnet"           #"https://wider-alien-shadow.solana-mainnet.quiknode.pro/2791b2f04f16035d8a6d260466afe20d4cefde2a/"
+wallet = "./wallet-secure.json"
+
+[scripts]
+# test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/vesting.ts"

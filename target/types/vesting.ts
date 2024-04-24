@@ -1,0 +1,987 @@
+export type Vesting = {
+  "version": "0.1.0",
+  "name": "vesting",
+  "constants": [
+    {
+      "name": "MONTHLY_TIMESTAMP",
+      "type": "i64",
+      "value": "60 * 60 * 24 * 30"
+    },
+    {
+      "name": "GLOBAL_STATE_TAG",
+      "type": "bytes",
+      "value": "[103, 108, 111, 98, 97, 108]"
+    },
+    {
+      "name": "ESCROW_TAG",
+      "type": "bytes",
+      "value": "[101, 115, 99, 114, 111, 119]"
+    },
+    {
+      "name": "RECIPIENT_TAG",
+      "type": "bytes",
+      "value": "[114, 101, 99, 105, 112, 105, 101, 110, 116]"
+    },
+    {
+      "name": "LOCK_STATE_TAG",
+      "type": "bytes",
+      "value": "[108, 111, 99, 107]"
+    },
+    {
+      "name": "THE_RECIPIENT",
+      "type": "publicKey",
+      "value": "pubkey ! (\"DTA8PmpWqW9zssr49wcbEjYiNdDx23NXBxy6kNSvxPUR\")"
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "change",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "streamParams",
+          "type": {
+            "defined": "StreamParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "stake",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "streamParams",
+          "type": {
+            "defined": "StreamParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "claim",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "recipientAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "globalState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "streamInstruction",
+      "docs": [
+        "The struct containing instructions for initializing a stream"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "startTime",
+            "docs": [
+              "Timestamp when the tokens start vesting"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "docs": [
+              "Timestamp when all tokens are fully vested"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "initialStakedAmount",
+            "docs": [
+              "Initial staked amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "remainingAmount",
+            "docs": [
+              "Staked amount left"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "cliff",
+            "docs": [
+              "Vesting contract \"cliff\" months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "cliffRate",
+            "docs": [
+              "Amount unlocked at the \"cliff\" timestamp"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "releaseFrequency",
+            "docs": [
+              "Release frequency of recurring payment in months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "releaseRate",
+            "docs": [
+              "Release rate of recurring payment"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "streamName",
+            "docs": [
+              "The name of this stream"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "lastClaimedAt",
+            "docs": [
+              "Timestamp when the tokens were last claimed"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "nextPayAt",
+            "docs": [
+              "Timestamp when the tokens will be paid next"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "nextPayAmount",
+            "docs": [
+              "Amount of tokens to be payed next"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "decimals",
+            "docs": [
+              "Decimals supported by the token"
+            ],
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "StreamParams",
+      "docs": [
+        "The struct containing instructions for initializing a stream"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "startTime",
+            "docs": [
+              "Timestamp when the tokens start vesting"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "docs": [
+              "Timestamp when all tokens are fully vested"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "stakedAmount",
+            "docs": [
+              "Staked amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "basedStake",
+            "docs": [
+              "Based Stake to calculate from"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "cliff",
+            "docs": [
+              "Vesting contract \"cliff\" months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "cliffRate",
+            "docs": [
+              "Amount unlocked at the \"cliff\" timestamp"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "releaseFrequency",
+            "docs": [
+              "Release frequency of recurring payment in months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "releaseRate",
+            "docs": [
+              "Release rate of recurring payment"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "streamName",
+            "docs": [
+              "The name of this stream"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "decimals",
+            "docs": [
+              "Decimals supported by the token"
+            ],
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "TokensStillLocked",
+      "msg": "Error: You need to wait at least lockup period."
+    },
+    {
+      "code": 6001,
+      "name": "InsufficientFunds",
+      "msg": "Error: Your balance is not enough."
+    },
+    {
+      "code": 6002,
+      "name": "InvalidATA",
+      "msg": "Error: Invalid ATA Escrow."
+    }
+  ]
+};
+
+export const IDL: Vesting = {
+  "version": "0.1.0",
+  "name": "vesting",
+  "constants": [
+    {
+      "name": "MONTHLY_TIMESTAMP",
+      "type": "i64",
+      "value": "60 * 60 * 24 * 30"
+    },
+    {
+      "name": "GLOBAL_STATE_TAG",
+      "type": "bytes",
+      "value": "[103, 108, 111, 98, 97, 108]"
+    },
+    {
+      "name": "ESCROW_TAG",
+      "type": "bytes",
+      "value": "[101, 115, 99, 114, 111, 119]"
+    },
+    {
+      "name": "RECIPIENT_TAG",
+      "type": "bytes",
+      "value": "[114, 101, 99, 105, 112, 105, 101, 110, 116]"
+    },
+    {
+      "name": "LOCK_STATE_TAG",
+      "type": "bytes",
+      "value": "[108, 111, 99, 107]"
+    },
+    {
+      "name": "THE_RECIPIENT",
+      "type": "publicKey",
+      "value": "pubkey ! (\"DTA8PmpWqW9zssr49wcbEjYiNdDx23NXBxy6kNSvxPUR\")"
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "change",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "streamParams",
+          "type": {
+            "defined": "StreamParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "stake",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "streamParams",
+          "type": {
+            "defined": "StreamParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "claim",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "recipientAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancel",
+      "accounts": [
+        {
+          "name": "globalState",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "stream",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "escrowAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "userVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "globalState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "streamInstruction",
+      "docs": [
+        "The struct containing instructions for initializing a stream"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "startTime",
+            "docs": [
+              "Timestamp when the tokens start vesting"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "docs": [
+              "Timestamp when all tokens are fully vested"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "initialStakedAmount",
+            "docs": [
+              "Initial staked amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "remainingAmount",
+            "docs": [
+              "Staked amount left"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "cliff",
+            "docs": [
+              "Vesting contract \"cliff\" months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "cliffRate",
+            "docs": [
+              "Amount unlocked at the \"cliff\" timestamp"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "releaseFrequency",
+            "docs": [
+              "Release frequency of recurring payment in months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "releaseRate",
+            "docs": [
+              "Release rate of recurring payment"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "streamName",
+            "docs": [
+              "The name of this stream"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "lastClaimedAt",
+            "docs": [
+              "Timestamp when the tokens were last claimed"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "nextPayAt",
+            "docs": [
+              "Timestamp when the tokens will be paid next"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "nextPayAmount",
+            "docs": [
+              "Amount of tokens to be payed next"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "decimals",
+            "docs": [
+              "Decimals supported by the token"
+            ],
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "StreamParams",
+      "docs": [
+        "The struct containing instructions for initializing a stream"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "startTime",
+            "docs": [
+              "Timestamp when the tokens start vesting"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "docs": [
+              "Timestamp when all tokens are fully vested"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "stakedAmount",
+            "docs": [
+              "Staked amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "basedStake",
+            "docs": [
+              "Based Stake to calculate from"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "cliff",
+            "docs": [
+              "Vesting contract \"cliff\" months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "cliffRate",
+            "docs": [
+              "Amount unlocked at the \"cliff\" timestamp"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "releaseFrequency",
+            "docs": [
+              "Release frequency of recurring payment in months"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "releaseRate",
+            "docs": [
+              "Release rate of recurring payment"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "streamName",
+            "docs": [
+              "The name of this stream"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "decimals",
+            "docs": [
+              "Decimals supported by the token"
+            ],
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "TokensStillLocked",
+      "msg": "Error: You need to wait at least lockup period."
+    },
+    {
+      "code": 6001,
+      "name": "InsufficientFunds",
+      "msg": "Error: Your balance is not enough."
+    },
+    {
+      "code": 6002,
+      "name": "InvalidATA",
+      "msg": "Error: Invalid ATA Escrow."
+    }
+  ]
+};
